@@ -7,27 +7,76 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="app-header">
-      <div>
-        <h1>ים שתל חברים</h1>
-        <p>פלטפורמה למציאת חברים מהכיתה, מפגשים קהילתיים והתנדבות</p>
-      </div>
-      <div class="role-switch">
-        <label for="role">מצב משתמש:</label>
-        <select id="role" aria-label="בחירת מצב משתמש">
-          <option value="user">משתמש</option>
-          <option value="admin">מנהל</option>
-        </select>
-      </div>
-    </header>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+      <div class="login-container">
+        <div class="login-card">
+          <h1>ים של חברים</h1>
+          <p class="login-subtitle">פלטפורמה למציאת חברים </p>
+          
+          <!-- Tab Selection -->
+          <div class="login-tabs">
+            <button id="tab-user" class="login-tab active">משתמש</button>
+            <button id="tab-manager" class="login-tab">מנהל</button>
+          </div>
 
-    <main class="container">
-      <section class="card">
+          <!-- Error Message -->
+          <div id="auth-error" class="auth-error hidden"></div>
+
+          <!-- User Login Form -->
+          <form id="user-login-form" class="auth-form">
+            <input type="email" id="user-email" placeholder="אימייל" autocomplete="email" required />
+            <input type="password" id="user-password" placeholder="סיסמה" autocomplete="current-password" required />
+            <button type="submit" class="login-btn login-btn-primary">כניסה</button>
+            
+            <p class="auth-switch">עדיין אין לך חשבון? <a href="#" id="show-register">הירשם כאן</a></p>
+          </form>
+
+          <!-- User Registration Form -->
+          <form id="user-register-form" class="auth-form hidden">
+            <input type="text" id="register-name" placeholder="שם מלא" autocomplete="name" required />
+            <input type="email" id="register-email" placeholder="אימייל" autocomplete="email" required />
+            <input type="password" id="register-password" placeholder="סיסמה (לפחות 6 תווים)" autocomplete="new-password" required minlength="6" />
+            <button type="submit" class="login-btn login-btn-primary">הרשמה</button>
+            
+            <p class="auth-switch">כבר יש לך חשבון? <a href="#" id="show-login">התחבר כאן</a></p>
+          </form>
+
+          <!-- Manager Login Form -->
+          <form id="manager-login-form" class="auth-form hidden">
+            <input type="email" id="manager-email" placeholder="אימייל מנהל" autocomplete="email" required />
+            <input type="password" id="manager-password" placeholder="סיסמת מנהל" autocomplete="current-password" required />
+            <button type="submit" class="login-btn login-btn-admin">כניסה כמנהל</button>
+            
+            <p class="auth-hint">כניסת מנהל מיועדת לצוות ניהול בלבד</p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main App (hidden until login) -->
+    <div id="app-content" class="app-content hidden">
+      <header class="app-header">
+        <div>
+          <h1>ים של חברים</h1>
+          <p>פלטפורמה למציאת חברים , מפגשים קהילתיים והתנדבות</p>
+        </div>
+        <div class="user-info">
+          <span id="current-role-label"></span>
+          <button id="logout-btn" class="logout-btn">יציאה</button>
+        </div>
+      </header>
+
+      <main class="container">
+      <section class="card section-user section-admin">
         <h2>מציאת חברים מכיתה א׳</h2>
         <form id="friend-form" class="form-grid">
           <input id="friend-name" type="text" placeholder="שם חבר/ה" required />
           <input id="friend-city" type="text" placeholder="עיר" required />
           <input id="friend-distance" type="number" min="0" step="0.5" placeholder="מרחק בק״מ" required />
+          <input id="friend-age" type="number" min="1" max="120" placeholder="גיל" required />
+          <input id="friend-interests" type="text" placeholder="תחומי עניין (מופרדים בפסיק)" required />
+          <input id="friend-profile-pic" type="url" placeholder="קישור לתמונת פרופיל" />
           <button type="submit">הוספת חבר</button>
         </form>
 
@@ -35,24 +84,32 @@
           <label for="distance-filter">הצג חברים עד מרחק:</label>
           <input id="distance-filter" type="range" min="1" max="100" value="25" />
           <span id="distance-value">25 ק״מ</span>
+          
+          <label for="age-min">טווח גילאים:</label>
+          <input id="age-min" type="number" min="1" max="120" value="18" placeholder="מ-" style="width: 80px;" />
+          <span>עד</span>
+          <input id="age-max" type="number" min="1" max="120" value="99" placeholder="עד" style="width: 80px;" />
+          
+          <label for="interest-filter">סינון לפי עניין:</label>
+          <input id="interest-filter" type="text" placeholder="חפש תחום עניין..." />
         </div>
 
         <ul id="friends-list" class="list"></ul>
       </section>
 
-      <section class="card">
-        <h2>מפגשים (מנהל בלבד)</h2>
-        <form id="meeting-form" class="form-grid admin-only">
+      <section class="card section-admin">
+        <h2>ניהול מפגשים</h2>
+        <form id="meeting-form" class="form-grid">
           <input id="meeting-title" type="text" placeholder="כותרת המפגש" required />
           <input id="meeting-date" type="date" required />
           <input id="meeting-location" type="text" placeholder="מיקום" required />
           <button type="submit">יצירת מפגש</button>
         </form>
-        <p id="meeting-hint" class="hint">רק מנהל יכול ליצור מפגשים. כל המשתמשים יכולים לצפות ברשימה.</p>
+        <h3>רשימת מפגשים</h3>
         <ul id="meetings-list" class="list"></ul>
       </section>
 
-      <section class="card">
+      <section class="card section-user section-admin">
         <h2>ארכיון תמונות</h2>
         <form id="photo-form" class="form-grid">
           <input id="photo-title" type="text" placeholder="כותרת לתמונה" required />
@@ -62,7 +119,7 @@
         <div id="photos-grid" class="photos-grid"></div>
       </section>
 
-      <section class="card">
+      <section class="card section-user section-admin">
         <h2>התנדבות להפקת אירועים</h2>
         <form id="volunteer-form" class="form-grid">
           <input id="volunteer-name" type="text" placeholder="שם מתנדב/ת" required />
@@ -76,7 +133,7 @@
         </div>
       </section>
 
-      <section class="card">
+      <section class="card section-user section-admin">
         <h2>תרומות להפקת אירועים</h2>
         <form id="donation-form" class="form-grid">
           <input id="donor-name" type="text" placeholder="שם תורם/ת" required />
@@ -93,6 +150,7 @@
     </main>
 
     <footer class="app-footer">נבנה לקהילה • חיבור חברים  • תמיכה באירועים</footer>
+    </div>
     <p class="credit">
       נוצר על ידי
       <a href="https://rahellyg.github.io/busipro/" target="_blank" rel="noopener noreferrer">ביזנס פרו</a>
