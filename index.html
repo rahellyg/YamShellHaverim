@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ים של חברים - מוצאים חברים </title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <h1>ים שתל חברים</h1>
+        <p>פלטפורמה למציאת חברים מהכיתה, מפגשים קהילתיים והתנדבות</p>
+      </div>
+      <div class="role-switch">
+        <label for="role">מצב משתמש:</label>
+        <select id="role" aria-label="בחירת מצב משתמש">
+          <option value="user">משתמש</option>
+          <option value="admin">מנהל</option>
+        </select>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h2>מציאת חברים מכיתה א׳</h2>
+        <form id="friend-form" class="form-grid">
+          <input id="friend-name" type="text" placeholder="שם חבר/ה" required />
+          <input id="friend-city" type="text" placeholder="עיר" required />
+          <input id="friend-distance" type="number" min="0" step="0.5" placeholder="מרחק בק״מ" required />
+          <button type="submit">הוספת חבר</button>
+        </form>
+
+        <div class="filters">
+          <label for="distance-filter">הצג חברים עד מרחק:</label>
+          <input id="distance-filter" type="range" min="1" max="100" value="25" />
+          <span id="distance-value">25 ק״מ</span>
+        </div>
+
+        <ul id="friends-list" class="list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>מפגשים (מנהל בלבד)</h2>
+        <form id="meeting-form" class="form-grid admin-only">
+          <input id="meeting-title" type="text" placeholder="כותרת המפגש" required />
+          <input id="meeting-date" type="date" required />
+          <input id="meeting-location" type="text" placeholder="מיקום" required />
+          <button type="submit">יצירת מפגש</button>
+        </form>
+        <p id="meeting-hint" class="hint">רק מנהל יכול ליצור מפגשים. כל המשתמשים יכולים לצפות ברשימה.</p>
+        <ul id="meetings-list" class="list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>ארכיון תמונות</h2>
+        <form id="photo-form" class="form-grid">
+          <input id="photo-title" type="text" placeholder="כותרת לתמונה" required />
+          <input id="photo-url" type="url" placeholder="קישור לתמונה (URL)" required />
+          <button type="submit">הוספת תמונה לארכיון</button>
+        </form>
+        <div id="photos-grid" class="photos-grid"></div>
+      </section>
+
+      <section class="card">
+        <h2>התנדבות להפקת אירועים</h2>
+        <form id="volunteer-form" class="form-grid">
+          <input id="volunteer-name" type="text" placeholder="שם מתנדב/ת" required />
+          <input id="volunteer-skill" type="text" placeholder="תחום עזרה" required />
+          <button type="submit">הוספת התנדבות</button>
+        </form>
+
+        <div>
+          <h3>רשימת מתנדבים</h3>
+          <ul id="volunteers-list" class="list"></ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>תרומות להפקת אירועים</h2>
+        <form id="donation-form" class="form-grid">
+          <input id="donor-name" type="text" placeholder="שם תורם/ת" required />
+          <input id="donation-amount" type="number" min="1" placeholder="סכום בש״ח" required />
+          <button type="submit">הוספת תרומה</button>
+        </form>
+
+        <div>
+          <h3>רשימת תרומות</h3>
+          <ul id="donations-list" class="list"></ul>
+          <p id="donations-total" class="total"></p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">נבנה לקהילה • חיבור חברים  • תמיכה באירועים</footer>
+    <p class="credit">
+      נוצר על ידי
+      <a href="https://rahellyg.github.io/busipro/" target="_blank" rel="noopener noreferrer">ביזנס פרו</a>
+    </p>
+
+    <script src="app.js"></script>
+  </body>
+</html>
