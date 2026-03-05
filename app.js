@@ -61,7 +61,19 @@ const initialData = {
   ],
   donations: [
     { donor: "משפחת כהן", amount: 250 }
-  ]
+  ],
+  conversations: [
+    {
+      id: 1,
+      participantName: "נועה",
+      messages: [
+        { sender: "נועה", text: "היי! מה קורה?", timestamp: new Date(Date.now() - 3600000).toISOString() },
+        { sender: "", text: "היי! הכל בסדר, איך אתך?", timestamp: new Date(Date.now() - 3000000).toISOString() },
+        { sender: "נועה", text: "מעולה! רוצה להיפגש מחר?", timestamp: new Date(Date.now() - 2400000).toISOString() }
+      ]
+    }
+  ],
+  currentChatId: null
 };
 
 let state = loadState();
@@ -103,6 +115,13 @@ const volunteersList = document.querySelector("#volunteers-list");
 const donationForm = document.querySelector("#donation-form");
 const donationsList = document.querySelector("#donations-list");
 const donationsTotal = document.querySelector("#donations-total");
+
+// Chat elements
+const conversationsList = document.querySelector("#conversations-list");
+const chatMessages = document.querySelector("#chat-messages");
+const chatMessageForm = document.querySelector("#chat-message-form");
+const chatMessageInput = document.querySelector("#chat-message-input");
+const newConversationBtn = document.querySelector("#new-conversation-btn");
 
 bootstrap();
 
@@ -225,6 +244,10 @@ function bootstrap() {
     donationForm.reset();
     renderDonations();
   });
+
+  // Chat event listeners
+  chatMessageForm.addEventListener("submit", handleSendMessage);
+  newConversationBtn.addEventListener("click", handleNewConversation);
 
   renderAll();
 }
@@ -445,6 +468,8 @@ function renderAll() {
   renderPhotos();
   renderVolunteers();
   renderDonations();
+  renderConversations();
+  renderChatMessages();
 }
 
 function renderAdminMode() {
@@ -585,4 +610,168 @@ function escapeHtml(value) {
 
 function escapeAttribute(value) {
   return escapeHtml(value).replaceAll("`", "&#96;");
+}
+
+// Chat functions
+function handleSendMessage(e) {
+  e.preventDefault();
+  
+  const messageText = chatMessageInput.value.trim();
+  if (!messageText) return;
+  
+  if (!state.currentChatId) {
+    alert("אנא בחר שיחה");
+    return;
+  }
+  
+  const conversation = state.conversations.find(c => c.id === state.currentChatId);
+  if (!conversation) return;
+  
+  conversation.messages.push({
+    sender: "",
+    text: messageText,
+    timestamp: new Date().toISOString()
+  });
+  
+  chatMessageInput.value = "";
+  
+  // Simulate other person's response after a short delay
+  setTimeout(() => {
+    conversation.messages.push({
+      sender: conversation.participantName,
+      text: "תודה על ההודעה! " + getRandomResponse(),
+      timestamp: new Date().toISOString()
+    });
+    renderChatMessages();
+  }, 1500);
+  
+  persist();
+  renderChatMessages();
+}
+
+function getRandomResponse() {
+  const responses = [
+    "מעניין!",
+    "בטוח!",
+    "כן, הסכמתי!",
+    "תיקח בחשבון 😊",
+    "יופי!",
+    "זה מעולה!",
+    "נשמע טוב!",
+    "אני מסכים!",
+    "יופי, נחזור אל זה מאוחר יותר"
+  ];
+  return responses[Math.floor(Math.random() * responses.length)];
+}
+
+function handleNewConversation() {
+  if (state.friends.length === 0) {
+    alert("אין חברים זמינים");
+    return;
+  }
+  
+  const friendName = state.friends[Math.floor(Math.random() * state.friends.length)].name;
+  
+  const newConvo = {
+    id: Date.now(),
+    participantName: friendName,
+    messages: [
+      {
+        sender: friendName,
+        text: "שלום! איך קורה?",
+        timestamp: new Date().toISOString()
+      }
+    ]
+  };
+  
+  state.conversations.push(newConvo);
+  state.currentChatId = newConvo.id;
+  persist();
+  renderConversations();
+  renderChatMessages();
+}
+
+function renderConversations() {
+  conversationsList.innerHTML = "";
+  
+  if (state.conversations.length === 0) {
+    conversationsList.innerHTML = '<p class="no-conversations">אין שיחות עדיין</p>';
+    return;
+  }
+  
+  state.conversations.forEach(convo => {
+    const div = document.createElement("div");
+    div.className = "conversation-item";
+    if (convo.id === state.currentChatId) {
+      div.classList.add("active");
+    }
+    
+    const unreadCount = convo.messages.filter(m => m.sender !== "").length;
+    const lastMessage = convo.messages[convo.messages.length - 1];
+    const preview = lastMessage.text.substring(0, 30) + (lastMessage.text.length > 30 ? "..." : "");
+    
+    div.innerHTML = `
+      ${convo.participantName}
+      ${unreadCount > 0 ? `<span class="badge">${unreadCount}</span>` : ""}
+    `;
+    
+    div.addEventListener("click", () => {
+      state.currentChatId = convo.id;
+      persist();
+      renderConversations();
+      renderChatMessages();
+    });
+    
+    conversationsList.appendChild(div);
+  });
+}
+
+function renderChatMessages() {
+  chatMessages.innerHTML = "";
+  
+  if (!state.currentChatId) {
+    chatMessages.innerHTML = '<div class="no-messages">בחר שיחה מהרשימה</div>';
+    return;
+  }
+  
+  const conversation = state.conversations.find(c => c.id === state.currentChatId);
+  if (!conversation || conversation.messages.length === 0) {
+    chatMessages.innerHTML = '<div class="no-messages">אין הודעות עדיין</div>';
+    return;
+  }
+  
+  conversation.messages.forEach(msg => {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = "chat-message";
+    
+    if (msg.sender === "") {
+      messageDiv.classList.add("own");
+    } else {
+      messageDiv.classList.add("other");
+    }
+    
+    const time = new Date(msg.timestamp);
+    const timeStr = time.toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" });
+    
+    const contentDiv = `
+      <div class="chat-message-content">
+        <div class="chat-message-bubble">${escapeHtml(msg.text)}</div>
+        <span class="chat-message-time">${timeStr}</span>
+      </div>
+    `;
+    
+    if (msg.sender !== "") {
+      messageDiv.innerHTML = `
+        <span class="chat-message-sender">${escapeHtml(msg.sender)}</span>
+        ${contentDiv}
+      `;
+    } else {
+      messageDiv.innerHTML = contentDiv;
+    }
+    
+    chatMessages.appendChild(messageDiv);
+  });
+  
+  // Scroll to bottom
+  chatMessages.parentElement.scrollTop = chatMessages.parentElement.scrollHeight;
 }
