@@ -1,5 +1,6 @@
 const STORAGE_KEY = "yam-shell-haverim-v1";
 const USERS_DB_KEY = "yam-users-db";
+const KIDS_AVATAR_PLACEHOLDER = "https://api.dicebear.com/9.x/adventurer/svg?seed=KidsAvatar";
 
 // Predefined manager credentials
 const MANAGER_CREDENTIALS = {
@@ -43,9 +44,9 @@ const initialData = {
   userEmail: null,
   userName: null,
   friends: [
-    { name: "נועה", city: "תל אביב", distance: 6, age: 24, interests: "ספורט, מוזיקה", profilePic: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=60" },
-    { name: "יואב", city: "רמת גן", distance: 12, age: 26, interests: "טכנולוגיה, טבע", profilePic: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=60" },
-    { name: "מאיה", city: "חולון", distance: 18, age: 23, interests: "אמנות, קריאה", profilePic: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=60" }
+    { name: "נועה", city: "תל אביב", distance: 6, age: 24, interests: "ספורט, מוזיקה", profilePic: "https://api.dicebear.com/9.x/adventurer/svg?seed=KidNoa" },
+    { name: "יואב", city: "רמת גן", distance: 12, age: 26, interests: "טכנולוגיה, טבע", profilePic: "https://api.dicebear.com/9.x/adventurer/svg?seed=KidYoav" },
+    { name: "מאיה", city: "חולון", distance: 18, age: 23, interests: "אמנות, קריאה", profilePic: "https://api.dicebear.com/9.x/adventurer/svg?seed=KidMaya" }
   ],
   meetings: [
     { title: "מפגש מחזור", date: "2026-04-12", location: "פארק הירקון" }
@@ -494,7 +495,8 @@ function renderFriends() {
         .sort((a, b) => a.distance - b.distance)
         .map(
           (friend) => {
-            const profileImg = friend.profilePic ? `<img src="${escapeAttribute(friend.profilePic)}" alt="${escapeAttribute(friend.name)}" class="friend-profile-pic" />` : '<div class="friend-profile-pic placeholder">📷</div>';
+            const profileImgUrl = friend.profilePic || KIDS_AVATAR_PLACEHOLDER;
+            const profileImg = `<img src="${escapeAttribute(profileImgUrl)}" alt="${escapeAttribute(friend.name)}" class="friend-profile-pic" />`;
             return `<li class="friend-card">
               ${profileImg}
               <div class="friend-info">
