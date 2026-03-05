@@ -4,9 +4,57 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ים של חברים - מוצאים חברים </title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      @keyframes swim {
+        0% { transform: translateX(-100px) scaleX(1); }
+        49% { transform: translateX(calc(100% + 100px)) scaleX(1); }
+        50% { transform: translateX(calc(100% + 100px)) scaleX(-1); }
+        100% { transform: translateX(-100px) scaleX(-1); }
+      }
+      
+      @keyframes bubble {
+        0% { transform: translateY(100%) scale(0); opacity: 0; }
+        50% { opacity: 0.8; }
+        100% { transform: translateY(-100%) scale(1); opacity: 0; }
+      }
+      
+      .swim-animation { animation: swim 15s linear infinite; }
+      .bubble-animation { animation: bubble 4s ease-in-out infinite; }
+    </style>
   </head>
   <body>
+    <!-- Ocean Background Wrapper -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <!-- Animated Bubbles -->
+      <div class="absolute bottom-0 left-[10%] w-4 h-4 bg-white/30 rounded-full bubble-animation" style="animation-delay: 0s;"></div>
+      <div class="absolute bottom-0 left-[25%] w-6 h-6 bg-white/20 rounded-full bubble-animation" style="animation-delay: 1s;"></div>
+      <div class="absolute bottom-0 left-[45%] w-3 h-3 bg-white/40 rounded-full bubble-animation" style="animation-delay: 2s;"></div>
+      <div class="absolute bottom-0 left-[65%] w-5 h-5 bg-white/25 rounded-full bubble-animation" style="animation-delay: 0.5s;"></div>
+      <div class="absolute bottom-0 left-[80%] w-4 h-4 bg-white/35 rounded-full bubble-animation" style="animation-delay: 1.5s;"></div>
+      <div class="absolute bottom-0 left-[90%] w-7 h-7 bg-white/15 rounded-full bubble-animation" style="animation-delay: 2.5s;"></div>
+      
+      <!-- Swimming Fish -->
+      <div class="absolute top-[15%] w-full swim-animation">
+        <svg width="60" height="40" viewBox="0 0 60 40" class="drop-shadow-lg">
+          <ellipse cx="25" cy="20" rx="20" ry="12" fill="#FFD700" />
+          <polygon points="45,20 60,8 60,32" fill="#FFA500" />
+          <circle cx="15" cy="17" r="3" fill="#333" />
+          <path d="M20 22 Q25 26 30 22" stroke="#333" stroke-width="2" fill="none" />
+        </svg>
+      </div>
+      <div class="absolute top-[60%] w-full swim-animation" style="animation-delay: -7s; animation-duration: 20s;">
+        <svg width="50" height="35" viewBox="0 0 60 40" class="drop-shadow-lg">
+          <ellipse cx="25" cy="20" rx="20" ry="12" fill="#FF6B9D" />
+          <polygon points="45,20 60,8 60,32" fill="#FF4081" />
+          <circle cx="15" cy="17" r="3" fill="#333" />
+          <path d="M20 22 Q25 26 30 22" stroke="#333" stroke-width="2" fill="none" />
+        </svg>
+      </div>
+    </div>
+
     <!-- Login Screen -->
     <div id="login-screen" class="login-screen">
       <div class="login-container">
@@ -66,6 +114,50 @@
           <button id="logout-btn" class="logout-btn">יציאה</button>
         </div>
       </header>
+
+      <!-- Hero Welcome Section -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <div class="hero-characters">
+            <div class="hero-avatar" style="animation-delay: 0s;">
+              <span class="text-4xl">👧</span>
+            </div>
+            <div class="hero-avatar hero-avatar-large" style="animation-delay: 0.3s;">
+              <span class="text-5xl">🤝</span>
+            </div>
+            <div class="hero-avatar" style="animation-delay: 0.6s;">
+              <span class="text-4xl">👦</span>
+            </div>
+          </div>
+          <h2 class="hero-title">מצאו חברים חדשים באזור שלכם! 🌊</h2>
+          <p class="hero-subtitle">הרשת החברתית הבטוחה והכיפית לילדי יסודי ומעלה</p>
+          
+          <!-- Feature Cards -->
+          <div class="feature-cards">
+            <div class="feature-card">
+              <div class="feature-icon" style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);">
+                <span class="text-3xl">🔒</span>
+              </div>
+              <h3>בטוח ומאובטח</h3>
+              <p>סביבה מוגנת עם פיקוח הורים מלא</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon" style="background: linear-gradient(135deg, #22d3ee 0%, #3b82f6 100%);">
+                <span class="text-3xl">📍</span>
+              </div>
+              <h3>חברים מהאזור</h3>
+              <p>מצאו חברים מהשכונה ומבית הספר</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon" style="background: linear-gradient(135deg, #4ade80 0%, #14b8a6 100%);">
+                <span class="text-3xl">🎮</span>
+              </div>
+              <h3>פעילויות משותפות</h3>
+              <p>ארגנו מפגשים ופעילויות יחד</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <main class="container">
       <section class="card section-user section-admin">

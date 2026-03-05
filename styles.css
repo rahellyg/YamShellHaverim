@@ -1,11 +1,13 @@
 :root {
-  --bg: #f6f8ff;
-  --card: #ffffff;
-  --text: #1f2a44;
-  --subtle: #667085;
-  --primary: #3f6df6;
-  --primary-soft: #e8eeff;
-  --border: #d7def4;
+  --bg: linear-gradient(180deg, #22d3ee 0%, #3b82f6 50%, #1e40af 100%);
+  --card: rgba(255, 255, 255, 0.15);
+  --card-hover: rgba(255, 255, 255, 0.25);
+  --text: #ffffff;
+  --subtle: rgba(255, 255, 255, 0.8);
+  --primary: #fbbf24;
+  --primary-hover: #f59e0b;
+  --primary-soft: rgba(251, 191, 36, 0.2);
+  --border: rgba(255, 255, 255, 0.3);
 }
 
 * {
@@ -14,9 +16,11 @@
 
 body {
   margin: 0;
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  background: linear-gradient(180deg, #f3f6ff 0%, #f8fbff 100%);
+  font-family: "Rubik", "Segoe UI", Tahoma, sans-serif;
+  background: linear-gradient(180deg, #22d3ee 0%, #3b82f6 50%, #1e40af 100%);
+  min-height: 100vh;
   color: var(--text);
+  position: relative;
 }
 
 .app-header {
@@ -41,6 +45,114 @@ p {
   margin-top: 0.3rem;
 }
 
+/* Hero Section */
+.hero-section {
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  padding: 2rem 1rem;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-content {
+  text-align: center;
+}
+
+.hero-characters {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.hero-avatar {
+  width: 80px;
+  height: 80px;
+  background: rgba(251, 191, 36, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  animation: float 4s ease-in-out infinite;
+  backdrop-filter: blur(8px);
+}
+
+.hero-avatar-large {
+  width: 96px;
+  height: 96px;
+  background: rgba(236, 72, 153, 0.3);
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.feature-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .role-switch {
   display: flex;
   gap: 0.5rem;
@@ -54,6 +166,8 @@ p {
 .container {
   max-width: 1100px;
   margin: 0 auto;
+  position: relative;
+  z-index: 10;
   padding: 0.5rem 1rem 2rem;
   display: grid;
   gap: 1rem;
@@ -64,7 +178,9 @@ p {
   border: 1px solid var(--border);
   border-radius: 1rem;
   padding: 1rem;
-  box-shadow: 0 8px 20px rgba(27, 39, 94, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .card h2 {
@@ -87,22 +203,32 @@ button {
   font-size: 0.97rem;
 }
 
+input,
+select {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e40af;
+}
+
 input:focus,
 select:focus {
   outline: 2px solid var(--primary-soft);
   border-color: var(--primary);
+  background: rgba(255, 255, 255, 1);
 }
 
 button {
   background: var(--primary);
-  color: white;
+  color: #1e40af;
   border: 1px solid var(--primary);
   cursor: pointer;
   transition: 0.15s ease;
+  font-weight: 600;
 }
 
 button:hover {
-  filter: brightness(0.95);
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .filters {
@@ -125,7 +251,15 @@ button:hover {
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   padding: 0.6rem 0.75rem;
-  background: #fcfdff;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.list li:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
 }
 
   .friend-card {
@@ -238,12 +372,20 @@ button:hover {
   display: none !important;
 }
 
+/* App Content & Login */
+.app-content {
+  position: relative;
+  z-index: 10;
+}
+
 .login-screen {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  position: relative;
+  z-index: 10;
 }
 
 .login-container {
@@ -256,8 +398,10 @@ button:hover {
   border: 1px solid var(--border);
   border-radius: 1.5rem;
   padding: 2.5rem 2rem;
-  box-shadow: 0 12px 40px rgba(27, 39, 94, 0.12);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
   text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .login-card h1 {
@@ -277,7 +421,7 @@ button:hover {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.1);
   padding: 0.3rem;
   border-radius: 0.7rem;
 }
@@ -296,15 +440,15 @@ button:hover {
 }
 
 .login-tab:hover {
-  background: rgba(63, 109, 246, 0.1);
+  background: rgba(255, 255, 255, 0.2);
   color: var(--primary);
 }
 
 .login-tab.active {
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.3);
   color: var(--primary);
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(27, 39, 94, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Auth Forms */
@@ -322,11 +466,14 @@ button:hover {
   border-radius: 0.7rem;
   font-size: 1rem;
   text-align: right;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e40af;
 }
 
 .auth-form input:focus {
   outline: 2px solid var(--primary-soft);
   border-color: var(--primary);
+  background: rgba(255, 255, 255, 1);
 }
 
 .auth-error {
@@ -409,24 +556,25 @@ button:hover {
 
 .login-btn-primary {
   background: var(--primary);
-  color: white;
+  color: #1e40af;
   border-color: var(--primary);
 }
 
 .login-btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(63, 109, 246, 0.3);
+  background: var(--primary-hover);
+  box-shadow: 0 8px 16px rgba(251, 191, 36, 0.4);
 }
 
 .login-btn-google {
-  background: #fff;
-  color: #444;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e40af;
   border-color: var(--border);
   font-weight: 500;
 }
 
 .login-btn-google:hover {
-  background: var(--bg);
+  background: rgba(255, 255, 255, 1);
   border-color: var(--primary);
   transform: translateY(-1px);
 }
@@ -437,23 +585,24 @@ button:hover {
 
 .login-btn-user {
   background: var(--primary);
-  color: white;
+  color: #1e40af;
   border-color: var(--primary);
 }
 
 .login-btn-user:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(63, 109, 246, 0.3);
+  background: var(--primary-hover);
+  box-shadow: 0 8px 16px rgba(251, 191, 36, 0.4);
 }
 
 .login-btn-admin {
-  background: #fff;
-  color: var(--primary);
-  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-color: white;
 }
 
 .login-btn-admin:hover {
-  background: var(--primary-soft);
+  background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
 
@@ -474,16 +623,17 @@ button:hover {
 }
 
 .logout-btn {
-  background: #fff;
-  color: var(--text);
-  border: 1px solid var(--border);
+  background: #1e3a8a;
+  color: white;
+  border: 1px solid #1e3a8a;
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
 }
 
 .logout-btn:hover {
-  background: #f5f7fa;
-  border-color: var(--primary);
+  background: #1e40af;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 640px) {
